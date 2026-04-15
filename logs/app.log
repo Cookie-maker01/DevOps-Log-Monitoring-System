@@ -1,0 +1,5 @@
+2026-04-15 INFO User login success user_id=1
+2026-04-15 ERROR Database connection failed
+2026-04-15 INFO Payment processed order_id=123
+2026-04-15 ERROR Timeout occurred service=auth
+2026-04-15 INFO User logout user_id=1
