@@ -1,0 +1,8 @@
+{
+    "total_info_logs": 3,
+    "total_errors": 2,
+    "error_details": [
+        "2026-04-15 ERROR Database connection failed",
+        "2026-04-15 ERROR Timeout occurred service=auth"
+    ]
+}

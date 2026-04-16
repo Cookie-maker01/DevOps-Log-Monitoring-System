@@ -1,6 +1,9 @@
 from src.analyzer import analyze_logs
+from src.alert import send_slack_alert
 import json
 import os
+
+ERROR_THRESHOLD = 1
 
 def save_report(data):
     os.makedirs("reports", exist_ok=True)
@@ -11,4 +14,11 @@ def save_report(data):
 if __name__ == "__main__":
     result = analyze_logs()
     save_report(result)
+
+    if result["total_errors"] > ERROR_THRESHOLD:
+
+        send_slack_alert(
+            f" 🚨 Log Alert! Errors detected: {result['total_errors']}"
+        )
+
     print("Report generated ✔")
