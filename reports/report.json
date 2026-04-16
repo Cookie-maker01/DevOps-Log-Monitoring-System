@@ -1,8 +1,19 @@
 {
-    "total_info_logs": 3,
     "total_errors": 2,
-    "error_details": [
-        "2026-04-15 ERROR Database connection failed",
-        "2026-04-15 ERROR Timeout occurred service=auth"
-    ]
+    "total_warnings": 1,
+    "top_endpoints": [
+        [
+            "/api/orders",
+            2
+        ],
+        [
+            "/api/users",
+            1
+        ],
+        [
+            "/api/products",
+            1
+        ]
+    ],
+    "average_response_time": 206.66666666666666
 }

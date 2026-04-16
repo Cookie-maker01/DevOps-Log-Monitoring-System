@@ -24,4 +24,8 @@ if __name__ == "__main__":
 
         send_email_alert(result["total_errors"])
 
-    print("Report generated ✔")
+    print("===== Log Monitoring Report =====")
+    print("Errors:", result["total_errors"])
+    print("Warnings:", result["total_warnings"])
+    print("Average Response Time:", result["average_response_time"], "ms")
+    print("Top Endpoints:", result["top_endpoints"])
