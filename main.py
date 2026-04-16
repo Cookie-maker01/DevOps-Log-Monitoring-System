@@ -1,5 +1,6 @@
 from src.analyzer import analyze_logs
 from src.alert import send_slack_alert
+from src.email_alert import send_email_alert
 import json
 import os
 
@@ -20,5 +21,7 @@ if __name__ == "__main__":
         send_slack_alert(
             f" 🚨 Log Alert! Errors detected: {result['total_errors']}"
         )
+
+        send_email_alert(result["total_errors"])
 
     print("Report generated ✔")
