@@ -19,7 +19,7 @@ def generate_log():
     timestamp = datetime.now().isoformat()
 
     level = random.choices(levels, weights=[6, 2, 2])[0]
-    endpoint = random.choice(endpoint)
+    endpoint = random.choice(endpoints)
     status = random.choice(status_codes)
     response_time = random.randint(50, 500)
 
