@@ -2,7 +2,7 @@ import time
 import random
 from datetime import datetime
 
-LOG_FILE = "logs/asp.log"
+LOG_FILE = "logs/app.log"
 
 levels = ["INFO", "WARN", "ERROR"]
 endpoints = [

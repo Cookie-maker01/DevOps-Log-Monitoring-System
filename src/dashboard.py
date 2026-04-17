@@ -32,25 +32,29 @@ def follow(file):
 def stream_logs():
 
     print("Streaming started...")
+    print("ERROR COUNT:", live_data["errors"])
 
     with open(LOG_FILE, "r") as f:
 
-        for line in follow(f):
+        while True:
+            line = f.readline()
+
+            if not line:
+                time.sleep(1)
+                continue
+
+            print("LINE:", line.strip())
 
             parts = line.strip().split()
 
-            if len(parts) < 6:
-                continue
-
-            level = parts[1]
-
-            if level == "ERROR":
+            if "ERROR" in parts:
                 live_data["errors"] += 1
 
             live_data["history"].append(live_data["errors"])
 
             if len(live_data["history"]) > 20:
                 live_data["history"].pop(0)
+
     
 @app.route("/")
 def home():
@@ -60,45 +64,56 @@ def home():
 <html>
 <head>
     <title>DevOps Dashboard</title>
-    <script src="https://cdn.jsdeliver.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
-    <h1>DevOpes Log Dashboard</h1>
+    <h1>DevOps Log Dashboard</h1>
 
     <canvas id="errorChart" width="400" height="200"></canvas>
 
     <script>
 
+        let chart;
+
         async function loadData() {
-            const res = await fetch('/api.report');
+            const res = await fetch('/api/report');
             return await res.json();
         }
 
-        async function renderChart() {
+        function initChart() {
         
-            const data = await loadData();
-            
             const ctx = document.getElementById('errorChart').getContext('2d');
 
-            new Chart(ctx, {
+            chart = new Chart(ctx, {
                 type: 'line',
-                data:{
-                    labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+                data: {
+                    labels: [],
                     datasets: [{
-                        label: 'Error Trend',
-                        data: data.error_trend,
+                        label: 'Errors',
+                        data:[],
                         borderColor: 'red'
                     }]
                 }
             });
         }
 
-        renderChart();
+        async function updateChart() {
 
-        setInterval(() => {
-            location.reload();
-        }, 5000);
+            const res = await fetch('/api/report');
+            const data = await res.json();
+
+            console.log("API DATA:", data);
+
+            chart.data.labels = data.history.map((_, i) => i);
+            chart.data.datasets[0].data = data.history;
+
+            chart.update();
+        }
+
+        initChart();
+
+        setInterval(updateChart, 2000);
 
       </script>
 
@@ -118,5 +133,5 @@ def api_report():
 if __name__ == "__main__":
     threading.Thread(target=stream_logs, daemon=True).start()
 
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)
 
