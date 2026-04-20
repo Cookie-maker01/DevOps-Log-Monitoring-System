@@ -32,7 +32,6 @@ def follow(file):
 def stream_logs():
 
     print("Streaming started...")
-    print("ERROR COUNT:", live_data["errors"])
 
     with open(LOG_FILE, "r") as f:
 
@@ -54,6 +53,8 @@ def stream_logs():
 
             if len(live_data["history"]) > 20:
                 live_data["history"].pop(0)
+
+            print("ERROR COUNT:", live_data["errors"])
 
     
 @app.route("/")
@@ -123,12 +124,12 @@ def home():
 
 @app.route("/api/report")
 def api_report():
-    data = load_report()
+    # data = load_report()
 
-    data["live_errors"]= live_data["errors"]
-    data["error_trend"] = live_data["history"]
+    # data["live_errors"]= live_data["errors"]
+    # data["error_trend"] = live_data["history"]
 
-    return jsonify(data)
+    return jsonify(live_data)
 
 if __name__ == "__main__":
     threading.Thread(target=stream_logs, daemon=True).start()
